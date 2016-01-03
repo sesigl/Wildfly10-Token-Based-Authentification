@@ -1,5 +1,7 @@
+# intellij
 .idea
 *.iml
+out
 
 
 rebel.xml
