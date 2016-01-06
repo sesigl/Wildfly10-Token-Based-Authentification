@@ -9,6 +9,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.math.BigInteger;
 import java.util.Set;
 import java.util.UUID;
 
@@ -30,7 +31,7 @@ public class AuthBean implements AuthService {
         Query nativeQuery = em.createNativeQuery(
                 "select count(*) from user"
         );
-        int count = (int) nativeQuery.getSingleResult();
+        BigInteger count = (BigInteger) nativeQuery.getSingleResult();
 
         User user;
         user = userService.findByUsernameAndPassword(loginElement.getUsername(), loginElement.getPassword());
