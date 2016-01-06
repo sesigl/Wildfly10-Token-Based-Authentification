@@ -14,7 +14,9 @@ public class User {
     private String name;
     private String email;
     private String authToken;
-    private String authRole;
+    private String role;
+    private String password;
+    private String salt;
 
     public void setAuthToken(String uuid) {
         this.authToken = uuid;
@@ -24,12 +26,12 @@ public class User {
         return authToken;
     }
 
-    public String getAuthRole() {
-        return authRole;
+    public String getRole() {
+        return role;
     }
 
-    public void setAuthRole(String authRole) {
-        this.authRole = authRole;
+    public void setRole(String authRole) {
+        this.role = authRole;
     }
 
     public int getId() {
@@ -54,5 +56,21 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 }
