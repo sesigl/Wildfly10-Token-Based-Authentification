@@ -1,11 +1,9 @@
 package org.journerist.wildfly.tokenBasedAuthentification.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@NamedQuery(name = "findUserByName", query="Select c from User c WHERE c.name = :name")
 public class User {
 
     @Id

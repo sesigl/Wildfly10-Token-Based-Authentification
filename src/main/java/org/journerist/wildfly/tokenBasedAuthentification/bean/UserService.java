@@ -5,6 +5,8 @@ import org.journerist.wildfly.tokenBasedAuthentification.entity.User;
 public interface UserService {
     User findByUsernameAndPassword(String name, String password);
 
+    void register(User user);
+
     void save(User user);
 
     User findByUsernameAndAuthToken(String authId, String authToken);

@@ -4,6 +4,7 @@ import org.journerist.wildfly.tokenBasedAuthentification.bean.AuthService;
 import org.journerist.wildfly.tokenBasedAuthentification.entity.AuthAccessElement;
 import org.journerist.wildfly.tokenBasedAuthentification.entity.AuthLoginElement;
 import org.jboss.resteasy.annotations.Form;
+import org.journerist.wildfly.tokenBasedAuthentification.entity.AuthRegisterElement;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
@@ -32,6 +33,14 @@ public class Auth {
 		}
 		return accessElement;
 
+	}
+
+	@POST
+	@Path("register")
+	@PermitAll
+	@Produces(MediaType.APPLICATION_JSON)
+	public void register(@Context HttpServletRequest request, @Form AuthRegisterElement registerElement) {
+		authService.register(registerElement);
 	}
 
 	@GET

@@ -6,16 +6,22 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NamedQuery;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 @Stateless
+
 public class UserBean implements UserService{
 
     private static final Random RANDOM = new SecureRandom();
@@ -31,7 +37,12 @@ public class UserBean implements UserService{
         searchCriterias.put("name", name);
 
 
-        User user = em.find(User.class, searchCriterias);
+        CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+        CriteriaQuery<User> query = criteriaBuilder.createQuery(User.class);
+        Root<User> from = query.from(User.class);
+        query.select(from).where(criteriaBuilder.equal(from.get("name"), name));
+        User user = em.createQuery(query).getSingleResult();
+
 
         try {
             if(hash(password.toCharArray(), user.getSalt().getBytes()).equals(password)) {
@@ -48,6 +59,7 @@ public class UserBean implements UserService{
         return null;
     }
 
+    @Override
     public void register(User user) {
         byte[] salt = getNextSalt();
         try {
@@ -59,12 +71,6 @@ public class UserBean implements UserService{
             e.printStackTrace();
         }
         em.persist(user);
-
-        Query nativeQuery = em.createNativeQuery(
-                "select count(*) from user"
-        );
-        int count = (int) nativeQuery.getSingleResult();
-
     }
 
     public void save(User user) {
@@ -77,7 +83,14 @@ public class UserBean implements UserService{
         searchCriterias.put("name", name);
         searchCriterias.put("authToken", authToken);
 
-        User user = em.find(User.class, searchCriterias);
+        CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+        CriteriaQuery<User> query = criteriaBuilder.createQuery(User.class);
+        Root<User> from = query.from(User.class);
+        query.select(from).where(criteriaBuilder.equal(from.get("name"), name));
+        query.select(from).where(criteriaBuilder.equal(from.get("authToken"), authToken));
+
+        User user = em.createQuery(query).getSingleResult();
+
         return user;
     }
 
